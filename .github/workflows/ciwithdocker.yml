@@ -1,0 +1,23 @@
+name: ci with docker
+on: push
+env:
+  DOCKER_NAME: ${{vars.DOCKER_NAME}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  DOCKER_IMAGE: my-python-sample-flask-api-restx
+jobs:
+  build-using-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Docker Login
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{env.DOCKER_NAME}}
+          password: ${{env.DOCKER_PASSWORD}}
+      - name: Docker Build
+        run: docker build -t ${{env.DOCKER_IMAGE}}
+      - name: push the docker image to push
+        run: docker push ${{env.DOCKER_IMAGE}}: latest
+          
+          
